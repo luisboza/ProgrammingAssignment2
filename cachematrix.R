@@ -1,15 +1,42 @@
-## Put comments here that give an overall description of what your
-## functions do
+#R programming - Assignment 2
+## Created by Luis Boza
 
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x = matrix()) {
-
+## Creat a function called "makeMatrix" that returns a list of functions
+makeMatrix <- function(x = matrix()) {
+## Sendind a warning massage if the "x" is not square matrix 
+        if(ncol(x)!=nrow(x)) {stop("The matrix is not square")}
+## * setmatrix      set the value of a matrix
+## * getmatrix      get the value of a matrix
+## * cacheInverse   get the cahced value (inverse of the matrix)
+## * getInverse     get the cahced value (inverse of the matrix)     
+        m <- NULL
+        setmatrix <- function(y) {
+                x <<- y
+                m <<- NULL
+        }
+        getmatrix <- function() x
+        setinverse <- function(solve) m <<- solve
+        getinverse <- function() m
+        list(setmatrix = setmatrix, getmatrix = getmatrix,
+             setinverse = setinverse,
+             getinverse = getinverse)
 }
 
+# The  function called "makeInverse" calculates the inverse of a "special" matrix created with 
+#the function "makeCacheMatrix"
 
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheInverse <- function(x, ...) {
+        # geting the cached value
+        m <- x$getinverse()
+        # if a cached value exists return it
+        if(!is.null(m)) {
+                message("getting cached data")
+                return(m)
+        }
+        # otherwise get the matrix, caclulate the inverse and store it in
+        # the cache
+        data <- x$getmatrix()
+        m <- solve(data, ...)
+        x$setinverse(m)
+        m
 }
